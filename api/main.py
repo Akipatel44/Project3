@@ -3,12 +3,18 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.controllers.auth import router as auth_router
+from app.controllers.place import router as place_router
+from app.controllers.event import event_router
+from app.core.seed import init_database
 
 # Initialize FastAPI app
 app = FastAPI(
     title="OsamVista API",
     description="API-first architecture with Clean Architecture pattern",
-    version="0.1.0"
+    version="0.1.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
 # CORS middleware configuration
@@ -20,6 +26,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Startup event - seed database
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database on app startup"""
+    init_database()
+
+# Include routers
+app.include_router(auth_router)
+app.include_router(place_router)
+app.include_router(event_router)
+
 # Health check endpoint
 @app.get("/health")
 async def health_check():
@@ -30,7 +47,7 @@ async def health_check():
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {"message": "Welcome to OsamVista API"}
+    return {"message": "Welcome to OsamVista API", "version": "0.1.0"}
 
 # Run with: uvicorn main:app --reload
 if __name__ == "__main__":
