@@ -118,8 +118,3 @@ export default function Modal({
     </AnimatePresence>
   )
 }
-        </>
-      )}
-    </AnimatePresence>
-  )
-}

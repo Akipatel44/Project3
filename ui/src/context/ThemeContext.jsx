@@ -27,6 +27,8 @@ export function ThemeProvider({ children }) {
   )
 }
 
+export { ThemeContext }
+
 export function useTheme() {
   const context = useContext(ThemeContext)
   if (!context) {

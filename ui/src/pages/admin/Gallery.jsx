@@ -212,23 +212,3 @@ const AdminGallery = () => {
 }
 
 export default AdminGallery
-                    >
-                      <Trash2 size={16} />
-                    </motion.button>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
-
-        {/* Count */}
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-400 text-sm">
-          Showing {filteredItems.length} of {items.length} gallery items
-        </motion.p>
-      </div>
-    </AdminLayout>
-  )
-}
-
-export default AdminGallery

@@ -1,4 +1,4 @@
-import { Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import { Home, Login, Register, OTPVerify, Places, Events, Gallery } from './pages'
 import Dashboard from './pages/admin/Dashboard'
@@ -9,7 +9,7 @@ import AdminGallery from './pages/admin/Gallery'
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <div className="min-h-screen">
         {/* Routes */}
         <Routes>
@@ -30,7 +30,7 @@ function App() {
           <Route path="/admin/gallery" element={<AdminGallery />} />
         </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 
