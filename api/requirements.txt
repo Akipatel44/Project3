@@ -12,6 +12,7 @@ python-dotenv==1.0.0
 
 # Authentication
 passlib==1.7.4
+argon2-cffi==23.1.0
 python-jose==3.3.0
 
 # Data Validation
