@@ -1,0 +1,392 @@
+Navbar Component - Role-Based Menu System
+==========================================
+
+OVERVIEW:
+=========
+A fully responsive navbar component with role-based menu items. Different menu items are shown based on user role:
+- SUPER_ADMIN: Full access to all sections (Dashboard, Users, Settings, etc.)
+- SUB_ADMIN: Access to content management (Places, Events, Gallery, Settings)
+- USER: Access to public content (Places, Events, Gallery)
+- PUBLIC: No user logged in (Places, Events, Gallery only)
+
+FILES CREATED:
+==============
+
+1. src/components/layout/Navbar.jsx (380+ lines)
+   - Main navbar component with role-based menu rendering
+   - Responsive desktop and mobile menus
+   - User dropdown menu
+   - Framer Motion animations
+   - Auth state integration
+
+2. src/config/menuConfig.js
+   - Menu configuration by role
+   - MENU_CONFIG object with role-based items
+   - getMenuByRole() utility function
+   - Easy to maintain and extend
+
+3. src/config/index.js
+   - Config exports for cleaner imports
+
+UPDATED FILES:
+==============
+
+1. src/components/layout/index.js
+   - Added Navbar export
+
+2. src/components/layout/MainLayout.jsx
+   - Replaced Header with Navbar
+   - Now imports from layout folder
+
+3. src/App.jsx
+   - Removed old navigation code
+   - Cleaned up imports
+   - Routes now handle all navigation
+
+
+MENU STRUCTURE BY ROLE:
+=======================
+
+SUPER_ADMIN:
+  - Home
+  - Dashboard (⚡ exclusive)
+  - Users (⚡ exclusive)
+  - Places
+  - Events
+  - Gallery
+  - Settings (⚡ exclusive)
+
+SUB_ADMIN:
+  - Home
+  - Places
+  - Events
+  - Gallery
+  - Settings (⚡ exclusive)
+
+USER:
+  - Home
+  - Places
+  - Events
+  - Gallery
+
+PUBLIC (not logged in):
+  - Home
+  - Places
+  - Events
+  - Gallery
+
+
+COMPONENT FEATURES:
+===================
+
+✅ Role-Based Menu Items
+   - Menu items filtered by user role
+   - Unauthorized items hidden
+   - Dynamic based on AuthContext
+
+✅ Responsive Design
+   - Desktop: Full menu bar
+   - Tablet/Mobile: Hamburger menu
+   - Mobile-optimized touch targets
+   - Smooth menu animations
+
+✅ User Dropdown Menu
+   - Shows user name and email
+   - Displays user role
+   - Profile link
+   - Settings link
+   - Logout button
+
+✅ Active Route Indicator
+   - Highlights current page
+   - Green background and text
+   - Updates on navigation
+
+✅ Authentication UI
+   - Login/Register buttons when logged out
+   - User avatar and name when logged in
+   - Quick logout from dropdown
+
+✅ Animations & Interactions
+   - Navbar slide-in animation
+   - Menu stagger animation
+   - Button hover/tap effects
+   - Smooth transitions
+
+✅ Mobile Menu
+   - Hamburger toggle
+   - Full-screen menu overlay
+   - Staggered item animations
+   - Touch-friendly buttons
+
+
+ROLE DETECTION:
+===============
+
+The component gets user role from AuthContext:
+```javascript
+const { user, logout } = useAuth()
+// user.role = 'SUPER_ADMIN' | 'SUB_ADMIN' | 'USER' | null
+```
+
+Menu items are retrieved using:
+```javascript
+const menuItems = getMenuByRole(user?.role)
+```
+
+If no user is logged in, PUBLIC menu is shown.
+
+
+USAGE:
+======
+
+The Navbar is automatically included in MainLayout:
+```javascript
+// In any page using MainLayout:
+<MainLayout>
+  <div>Your content here</div>
+</MainLayout>
+
+// Navbar is automatically rendered
+// with correct menu items based on user role
+```
+
+Custom integration:
+```javascript
+import { Navbar } from '@/components/layout'
+
+export default function CustomPage() {
+  return (
+    <>
+      <Navbar />
+      <main>Your content</main>
+    </>
+  )
+}
+```
+
+
+STYLING (TAILWIND ONLY):
+========================
+
+Navbar Container:
+- sticky top-0 z-50
+- bg-white shadow-md
+- border-b border-gray-200
+
+Menu Items:
+- Desktop: flex gap-1
+- Active: bg-green-100, text-green-700
+- Inactive: text-gray-700, hover:bg-gray-100
+
+Mobile Menu:
+- lg:hidden (hidden on large screens)
+- Full-width overlay
+- bg-gray-50 with border-top
+
+Buttons:
+- Hover scales (1.02 - 1.05)
+- Tap scales down (0.95 - 0.98)
+- Smooth transitions
+
+
+USER DROPDOWN MENU:
+===================
+
+Structure:
+- User avatar (circle with initial)
+- User name
+- User email
+- User role (badge)
+- My Profile link
+- Settings link
+- Logout button (red)
+
+Animations:
+- Fade in/out
+- Slide up/down
+- 150ms duration
+
+
+MOBILE RESPONSIVE:
+==================
+
+Breakpoints:
+- Hidden on desktop (lg:hidden)
+- Full menu on tablet/mobile
+- Hamburger toggle button
+
+Features:
+- Smooth menu slide
+- Staggered item animations
+- Touch-optimized spacing
+- Full-width buttons
+
+Menu Items in Mobile:
+- Staggered appearance
+- Green highlight for active
+- Same functionality as desktop
+
+
+KEYBOARD SUPPORT:
+=================
+
+✅ Tab navigation between menu items
+✅ Enter to activate menu items
+✅ Escape to close dropdown (native)
+✅ Click outside to close dropdown
+
+
+EXTENDING THE MENU:
+===================
+
+To add new menu items, edit menuConfig.js:
+
+```javascript
+export const MENU_CONFIG = {
+  SUPER_ADMIN: [
+    { id: 'home', label: 'Home', path: '/', icon: 'Home' },
+    { id: 'new-item', label: 'New Feature', path: '/new', icon: 'Star' }, // Add here
+    // ...
+  ],
+  // ...
+}
+```
+
+Available icons (from lucide-react):
+- Home, MapPin, Calendar, Image
+- BarChart3, Users, Settings
+- Add more as needed
+
+
+STATE MANAGEMENT:
+=================
+
+Mobile Menu State:
+```javascript
+const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+```
+
+User Dropdown State:
+```javascript
+const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+```
+
+Both close on navigation.
+
+
+SECURITY:
+=========
+
+✅ Menu items based on user.role
+✅ Backend API should enforce role-based access
+✅ Frontend menu is UI-only
+✅ Always validate on backend
+✅ Use protected routes for sensitive pages
+
+
+PERFORMANCE:
+============
+
+✅ Memoized menu config
+✅ Efficient re-renders
+✅ Smooth animations (GPU-accelerated)
+✅ Lightweight component
+✅ No heavy dependencies
+
+
+ACCESSIBILITY:
+==============
+
+✅ Semantic HTML (nav, button, a)
+✅ Proper ARIA labels
+✅ Keyboard navigation
+✅ Focus visible states
+✅ Color contrast compliant
+✅ Touch-friendly targets (44x44px minimum)
+
+
+INTEGRATION WITH PAGES:
+=======================
+
+All pages automatically get Navbar:
+- Home
+- Places
+- Events
+- Gallery
+- Dashboard (if SUPER_ADMIN)
+- User Management (if SUPER_ADMIN)
+- Settings (if admin)
+
+Auth pages (Login, Register, OTP) don't show Navbar
+because they use AuthLayout instead of MainLayout.
+
+
+NEXT STEPS:
+===========
+
+1. Create admin pages:
+   - /dashboard - Analytics dashboard
+   - /admin/users - User management
+   - /admin/settings - App settings
+
+2. Create user profile page:
+   - /profile - User profile page
+
+3. Add more admin features:
+   - Content moderation
+   - User roles management
+   - Analytics
+
+4. Extend menu config:
+   - Add more menu items
+   - Add icons for each role
+   - Add submenu groups
+
+
+TESTING USERS:
+==============
+
+Demo credentials to test different roles:
+
+SUPER_ADMIN:
+- Email: admin@osamvista.com
+- Password: Admin@123
+- Should see: Dashboard, Users, Settings
+
+SUB_ADMIN:
+- Email: subadmin@osamvista.com (if exists)
+- Should see: Places, Events, Gallery, Settings
+
+USER:
+- Email: user@osamvista.com (if exists)
+- Should see: Places, Events, Gallery only
+
+PUBLIC:
+- Not logged in
+- Should see: Places, Events, Gallery only
+
+
+TROUBLESHOOTING:
+================
+
+Menu items not showing:
+- Check user.role in AuthContext
+- Verify MENU_CONFIG has role entry
+- Check browser console for errors
+
+Navbar not visible:
+- Verify page uses MainLayout
+- Check z-index conflicts
+- Verify sticky positioning
+
+Mobile menu not working:
+- Check screen size (lg: 1024px)
+- Verify Framer Motion is installed
+- Check animation playback
+
+
+---
+Status: ✅ COMPLETE
+Created: January 30, 2026
+Type: Production-Ready Component

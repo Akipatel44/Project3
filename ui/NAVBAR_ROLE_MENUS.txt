@@ -1,0 +1,428 @@
+NAVBAR - ROLE-BASED MENU VISIBILITY
+====================================
+
+SUPER_ADMIN MENU:
+=================
+
+┌─────────────────────────────────────────┐
+│ Logo: O                                 │
+│ OsamVista                               │
+│                                         │
+│ [Home] [Dashboard] [Users] [Places]    │
+│ [Events] [Gallery] [Settings]          │
+│                                         │
+│                        [Avatar ▼]       │
+│                                         │
+│ Desktop: All items visible              │
+│ Mobile: Hamburger menu with all items  │
+└─────────────────────────────────────────┘
+
+Menu Items:
+1. Home           → /
+2. Dashboard      → /dashboard      (EXCLUSIVE)
+3. Users          → /admin/users     (EXCLUSIVE)
+4. Places         → /places
+5. Events         → /events
+6. Gallery        → /gallery
+7. Settings       → /admin/settings  (EXCLUSIVE)
+
+User Dropdown:
+- My Profile
+- Settings
+- Logout
+
+Capabilities:
+- View everything
+- Manage users
+- Admin functions
+- Access analytics
+
+
+SUB_ADMIN MENU:
+===============
+
+┌─────────────────────────────────────────┐
+│ Logo: O                                 │
+│ OsamVista                               │
+│                                         │
+│ [Home] [Places] [Events] [Gallery]     │
+│ [Settings]                             │
+│                                         │
+│                        [Avatar ▼]       │
+│                                         │
+│ Desktop: 5 items visible                │
+│ Mobile: Hamburger menu with all items  │
+└─────────────────────────────────────────┘
+
+Menu Items:
+1. Home        → /
+2. Places      → /places
+3. Events      → /events
+4. Gallery     → /gallery
+5. Settings    → /admin/settings  (EXCLUSIVE)
+
+Hidden Items:
+❌ Dashboard
+❌ Users
+
+User Dropdown:
+- My Profile
+- Settings
+- Logout
+
+Capabilities:
+- View all content
+- Manage places, events, gallery
+- Limited admin settings
+- No user management
+
+
+USER MENU:
+==========
+
+┌─────────────────────────────────────────┐
+│ Logo: O                                 │
+│ OsamVista                               │
+│                                         │
+│ [Home] [Places] [Events] [Gallery]     │
+│                                         │
+│                        [Avatar ▼]       │
+│                                         │
+│ Desktop: 4 items visible                │
+│ Mobile: Hamburger menu with all items  │
+└─────────────────────────────────────────┘
+
+Menu Items:
+1. Home    → /
+2. Places  → /places
+3. Events  → /events
+4. Gallery → /gallery
+
+Hidden Items:
+❌ Dashboard
+❌ Users
+❌ Settings (admin)
+
+User Dropdown:
+- My Profile
+- Settings
+- Logout
+
+Capabilities:
+- Browse content
+- View places, events, gallery
+- Personal settings only
+
+
+PUBLIC MENU (Not Logged In):
+============================
+
+┌─────────────────────────────────────────┐
+│ Logo: O                                 │
+│ OsamVista                               │
+│                                         │
+│ [Home] [Places] [Events] [Gallery]     │
+│                                         │
+│               [Login] [Register]        │
+│                                         │
+│ Desktop: 4 items visible                │
+│ Mobile: Hamburger menu with all items  │
+└─────────────────────────────────────────┘
+
+Menu Items:
+1. Home    → /
+2. Places  → /places
+3. Events  → /events
+4. Gallery → /gallery
+
+Hidden Items:
+❌ Dashboard
+❌ Users
+❌ Settings (admin)
+
+Auth Buttons:
+- Login
+- Register
+
+Capabilities:
+- Browse public content
+- No user account
+- Limited functionality
+
+
+VISUAL COMPARISON:
+==================
+
+Item          SUPER_ADMIN  SUB_ADMIN  USER  PUBLIC
+────────────────────────────────────────────────
+Home             ✅          ✅       ✅      ✅
+Dashboard        ✅          ❌       ❌      ❌
+Users            ✅          ❌       ❌      ❌
+Places           ✅          ✅       ✅      ✅
+Events           ✅          ✅       ✅      ✅
+Gallery          ✅          ✅       ✅      ✅
+Settings         ✅ (admin)   ✅ (limited) ❌  ❌
+Auth Options     Logout       Logout   Logout Login/Register
+
+
+MENU ITEM DETAILS:
+==================
+
+Home
+────
+- Path: /
+- Icon: Home (house)
+- Visibility: All roles
+- Visible to: Everyone
+- Function: Main landing page
+
+Dashboard
+─────────
+- Path: /dashboard
+- Icon: BarChart3 (chart)
+- Visibility: SUPER_ADMIN only
+- Purpose: Analytics & statistics
+- Feature: Admin analytics
+
+Users
+─────
+- Path: /admin/users
+- Icon: Users (people)
+- Visibility: SUPER_ADMIN only
+- Purpose: User management
+- Features: Add, edit, delete users
+
+Places
+──────
+- Path: /places
+- Icon: MapPin (location)
+- Visibility: All authenticated roles
+- Purpose: View/manage places
+- Features: Filter, search, details
+
+Events
+──────
+- Path: /events
+- Icon: Calendar (calendar)
+- Visibility: All authenticated roles
+- Purpose: View/manage events
+- Features: Filter by date, search
+
+Gallery
+───────
+- Path: /gallery
+- Icon: Image (picture)
+- Visibility: All authenticated roles
+- Purpose: View/manage photos
+- Features: View, filter, fullscreen
+
+Settings
+────────
+- Path: /admin/settings (admin) or /settings (user)
+- Icon: Settings (gear)
+- Visibility: Admin roles see /admin/settings
+- Purpose: Configuration
+- Features: App settings, user preferences
+
+
+ROLE HIERARCHY:
+===============
+
+Level 4 (Highest): SUPER_ADMIN
+  └─ Full access
+  └─ 7 menu items
+  └─ Can do everything
+
+Level 3: SUB_ADMIN
+  └─ Content management
+  └─ 5 menu items
+  └─ Can't manage users
+
+Level 2: USER
+  └─ Consumer
+  └─ 4 menu items
+  └─ Only view content
+
+Level 1 (Lowest): PUBLIC
+  └─ Browsing only
+  └─ 4 menu items
+  └─ Must login to do more
+
+
+AUTHORIZATION FLOW:
+===================
+
+User Logs In
+    ↓
+Backend Returns: { user: { role: 'SUPER_ADMIN', ... } }
+    ↓
+AuthContext Stores: user.role
+    ↓
+Navbar Receives: user?.role from useAuth()
+    ↓
+Calls: getMenuByRole('SUPER_ADMIN')
+    ↓
+Returns: MENU_CONFIG.SUPER_ADMIN array
+    ↓
+Renders: Only those menu items
+    ↓
+Other Items: Hidden from UI
+
+
+MENU FILTERING LOGIC:
+=====================
+
+```javascript
+// In Navbar.jsx
+const menuItems = getMenuByRole(user?.role)
+
+// In menuConfig.js
+export function getMenuByRole(role) {
+  if (!role) return MENU_CONFIG.PUBLIC
+  return MENU_CONFIG[role] || MENU_CONFIG.PUBLIC
+}
+
+// Result:
+// SUPER_ADMIN → 7 items
+// SUB_ADMIN   → 5 items
+// USER        → 4 items
+// PUBLIC      → 4 items
+```
+
+
+CONDITIONAL RENDERING:
+======================
+
+In Navbar component:
+
+```jsx
+{menuItems.map((item) => (
+  <NavLink
+    key={item.id}
+    to={item.path}
+    className={isActive ? 'active' : 'inactive'}
+  >
+    <Icon /> {item.label}
+  </NavLink>
+))}
+```
+
+Only items in menuItems array are rendered.
+Other items are completely absent from DOM.
+
+
+TESTING EACH ROLE:
+==================
+
+Test SUPER_ADMIN:
+1. Login: admin@osamvista.com / Admin@123
+2. Should see: Home, Dashboard, Users, Places, Events, Gallery, Settings
+3. Count: 7 menu items
+
+Test SUB_ADMIN (if user exists):
+1. Login: subadmin@osamvista.com / [password]
+2. Should see: Home, Places, Events, Gallery, Settings
+3. Should NOT see: Dashboard, Users
+4. Count: 5 menu items
+
+Test USER (if user exists):
+1. Login: user@osamvista.com / [password]
+2. Should see: Home, Places, Events, Gallery
+3. Should NOT see: Dashboard, Users, Settings (admin)
+4. Count: 4 menu items
+
+Test PUBLIC (not logged in):
+1. Don't login
+2. Should see: Home, Places, Events, Gallery
+3. Should see: Login & Register buttons
+4. Count: 4 menu items + auth buttons
+
+
+MOBILE MENU FOR EACH ROLE:
+==========================
+
+SUPER_ADMIN (Mobile):
+┌──────────────────────┐
+│ Home        ▼ 1/7    │
+│ Dashboard   ▼ 2/7    │
+│ Users       ▼ 3/7    │
+│ Places      ▼ 4/7    │
+│ Events      ▼ 5/7    │
+│ Gallery     ▼ 6/7    │
+│ Settings    ▼ 7/7    │
+├──────────────────────┤
+│ 👤 My Profile        │
+│ ⚙️ Settings          │
+│ 🚪 Logout            │
+└──────────────────────┘
+
+SUB_ADMIN (Mobile):
+┌──────────────────────┐
+│ Home        ▼ 1/5    │
+│ Places      ▼ 2/5    │
+│ Events      ▼ 3/5    │
+│ Gallery     ▼ 4/5    │
+│ Settings    ▼ 5/5    │
+├──────────────────────┤
+│ 👤 My Profile        │
+│ ⚙️ Settings          │
+│ 🚪 Logout            │
+└──────────────────────┘
+
+USER (Mobile):
+┌──────────────────────┐
+│ Home        ▼ 1/4    │
+│ Places      ▼ 2/4    │
+│ Events      ▼ 3/4    │
+│ Gallery     ▼ 4/4    │
+├──────────────────────┤
+│ 👤 My Profile        │
+│ ⚙️ Settings          │
+│ 🚪 Logout            │
+└──────────────────────┘
+
+PUBLIC (Mobile):
+┌──────────────────────┐
+│ Home        ▼ 1/4    │
+│ Places      ▼ 2/4    │
+│ Events      ▼ 3/4    │
+│ Gallery     ▼ 4/4    │
+├──────────────────────┤
+│ 🔑 Login             │
+│ 📝 Register          │
+└──────────────────────┘
+
+
+IMPORTANT NOTES:
+================
+
+1. Frontend menu is for UX only
+   - Backend must validate every API call
+   - Frontend hiding items is NOT secure
+
+2. Role must come from backend
+   - Never set user.role on frontend
+   - Always validate server-side
+
+3. Unauthorized pages should:
+   - Still redirect/404 on wrong role
+   - Backend API must return 403
+   - Frontend should handle gracefully
+
+4. Menu is reactive
+   - Changes immediately on logout
+   - Updates on role change
+   - Reflects current user state
+
+5. All Tailwind CSS
+   - No custom styling
+   - Uses standard utilities
+   - Responsive by default
+
+
+---
+
+Created: January 30, 2026
+Updated: Current Session
+Status: ✅ COMPLETE
+Type: Reference Guide
