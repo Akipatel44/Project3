@@ -1,6 +1,7 @@
 # Core configuration for FastAPI application
 import os
 from dotenv import load_dotenv
+from functools import lru_cache
 
 # Load environment variables from .env
 load_dotenv()
@@ -8,11 +9,22 @@ load_dotenv()
 class Settings:
     """Application settings loaded from environment variables"""
     
-    # Database
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL", 
-        "mysql+pymysql://root:password@localhost:3306/osamvista"
-    )
+    # Database Configuration (MySQL with Adminer compatibility)
+    DATABASE_HOST: str = os.getenv("DATABASE_HOST", "localhost")
+    DATABASE_PORT: str = os.getenv("DATABASE_PORT", "3306")
+    DATABASE_USER: str = os.getenv("DATABASE_USER", "akshay")
+    DATABASE_PASSWORD: str = os.getenv("DATABASE_PASSWORD", "AKS@2025elite")
+    DATABASE_NAME: str = os.getenv("DATABASE_NAME", "osamvista")
+    
+    @property
+    def DATABASE_URL(self) -> str:
+        """Construct SQLAlchemy database URL"""
+        return (
+            f"mysql+pymysql://"
+            f"{self.DATABASE_USER}:{self.DATABASE_PASSWORD}"
+            f"@{self.DATABASE_HOST}:{self.DATABASE_PORT}"
+            f"/{self.DATABASE_NAME}"
+        )
     
     # JWT
     SECRET_KEY: str = os.getenv(
@@ -25,8 +37,14 @@ class Settings:
     # App
     APP_NAME: str = "OsamVista API"
     DEBUG: bool = os.getenv("DEBUG", "True") == "True"
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     
     # CORS
     ALLOWED_HOSTS: list = ["*"]
 
-settings = Settings()
+@lru_cache()
+def get_settings() -> Settings:
+    """Get cached settings instance"""
+    return Settings()
+
+settings = get_settings()
