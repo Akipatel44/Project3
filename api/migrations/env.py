@@ -7,6 +7,7 @@ from alembic import context
 import os
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 # Add app path to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -19,8 +20,20 @@ from app.models import Role, User, Place, Event, Gallery
 # Alembic Config object
 config = context.config
 
-# Set sqlalchemy.url from application settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+# Create URL with proper encoding (avoiding ConfigParser interpolation issues)
+encoded_password = quote(settings.DATABASE_PASSWORD, safe='')
+database_url = (
+    f"mysql+pymysql://{settings.DATABASE_USER}:{encoded_password}"
+    f"@{settings.DATABASE_HOST}:{settings.DATABASE_PORT}/{settings.DATABASE_NAME}"
+)
+
+# Set sqlalchemy.url using the properly encoded URL
+# We use raw string to avoid ConfigParser interpolation issues
+try:
+    config.set_main_option("sqlalchemy.url", database_url)
+except ValueError:
+    # If ConfigParser complains, we'll use the URL directly in run_migrations functions
+    pass
 
 # Logging configuration
 if config.config_file_name is not None:
@@ -32,7 +45,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode"""
-    url = config.get_main_option("sqlalchemy.url")
+    url = database_url
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -48,7 +61,7 @@ def run_migrations_offline() -> None:
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode"""
     # Create engine directly from the URL
-    url = config.get_main_option("sqlalchemy.url")
+    url = database_url
     connectable = create_engine(url, poolclass=pool.NullPool)
 
     with connectable.connect() as connection:

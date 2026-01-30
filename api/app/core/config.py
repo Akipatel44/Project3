@@ -2,6 +2,7 @@
 import os
 from dotenv import load_dotenv
 from functools import lru_cache
+from urllib.parse import quote
 
 # Load environment variables from .env
 load_dotenv()
@@ -18,10 +19,11 @@ class Settings:
     
     @property
     def DATABASE_URL(self) -> str:
-        """Construct SQLAlchemy database URL"""
+        """Construct SQLAlchemy database URL with URL-encoded password"""
+        encoded_password = quote(self.DATABASE_PASSWORD, safe='')
         return (
             f"mysql+pymysql://"
-            f"{self.DATABASE_USER}:{self.DATABASE_PASSWORD}"
+            f"{self.DATABASE_USER}:{encoded_password}"
             f"@{self.DATABASE_HOST}:{self.DATABASE_PORT}"
             f"/{self.DATABASE_NAME}"
         )

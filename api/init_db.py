@@ -9,9 +9,10 @@ This script:
 - Compatible with Adminer for management
 """
 
-from sqlalchemy import text
-from app.database.session import engine, Base, SessionLocal
+from sqlalchemy import text, create_engine
+from app.database.session import Base, SessionLocal
 from app.core.config import settings
+from urllib.parse import quote
 
 def init_db():
     """Initialize database and create tables"""
@@ -20,11 +21,22 @@ def init_db():
     print(f"📁 Database: {settings.DATABASE_NAME}")
     
     try:
-        # Create database if not exists
-        with engine.connect() as connection:
+        # First, create database if not exists (connect without specifying database)
+        encoded_password = quote(settings.DATABASE_PASSWORD, safe='')
+        admin_engine = create_engine(
+            f"mysql+pymysql://{settings.DATABASE_USER}:{encoded_password}@{settings.DATABASE_HOST}:{settings.DATABASE_PORT}",
+            echo=False
+        )
+        
+        with admin_engine.connect() as connection:
             connection.execute(text(f"CREATE DATABASE IF NOT EXISTS {settings.DATABASE_NAME}"))
             connection.commit()
             print("✓ Database created/verified")
+        
+        admin_engine.dispose()
+        
+        # Now import engine after database exists
+        from app.database.session import engine
         
         # Create all tables from models
         Base.metadata.create_all(bind=engine)
