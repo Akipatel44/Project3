@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.controllers.auth import router as auth_router
 from app.controllers.place import router as place_router
 from app.controllers.event import event_router
+from app.controllers.gallery import gallery_router
 from app.core.seed import init_database
 
 # Initialize FastAPI app
@@ -36,6 +37,7 @@ async def startup_event():
 app.include_router(auth_router)
 app.include_router(place_router)
 app.include_router(event_router)
+app.include_router(gallery_router)
 
 # Health check endpoint
 @app.get("/health")
