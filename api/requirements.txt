@@ -1,0 +1,23 @@
+# FastAPI Framework
+fastapi==0.128.0
+uvicorn==0.40.0
+
+# Database ORM and Migrations
+sqlalchemy==2.0.25
+alembic==1.13.1
+pymysql==1.1.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Authentication
+passlib==1.7.4
+argon2-cffi==23.1.0
+python-jose==3.3.0
+
+# Data Validation
+pydantic==2.12.5
+email-validator==2.1.0
+
+# Additional dependencies
+python-multipart==0.0.6
