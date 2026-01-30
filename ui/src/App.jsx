@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from
 import { motion } from 'framer-motion'
 import { Home as HomeIcon, MapPin, Calendar, Image, LogOut, LogIn } from 'lucide-react'
 import './index.css'
-import { Home, Login, Register, Places, Events, Gallery } from './pages'
+import { Home, Login, Register, OTPVerify, Places, Events, Gallery } from './pages'
 import { useAuth } from './context'
 
 function App() {
@@ -94,6 +94,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-otp" element={<OTPVerify />} />
           <Route path="/places" element={<Places />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gallery" element={<Gallery />} />
