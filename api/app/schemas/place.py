@@ -66,6 +66,7 @@ class PlaceResponse(BaseModel):
     latitude: Optional[float]
     longitude: Optional[float]
     address: Optional[str]
+    image_url: Optional[str]
     created_at: datetime
     updated_at: datetime
     
@@ -80,6 +81,7 @@ class PlaceResponse(BaseModel):
                 "latitude": 25.3176,
                 "longitude": 82.9739,
                 "address": "Varanasi, Uttar Pradesh, India",
+                "image_url": "/api/images/varanasi-ghats.jpg",
                 "created_at": "2026-01-30T10:00:00",
                 "updated_at": "2026-01-30T10:00:00"
             }

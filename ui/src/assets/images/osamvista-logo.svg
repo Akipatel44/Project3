@@ -1,27 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="140" viewBox="0 0 420 140" role="img" aria-label="OsamVista logo">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200">
   <defs>
-    <linearGradient id="sun" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#f97316"/>
-    </linearGradient>
-    <linearGradient id="mountain" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#0ea5e9"/>
-      <stop offset="100%" stop-color="#0369a1"/>
-    </linearGradient>
-    <linearGradient id="land" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0%" stop-color="#0d9488"/>
-      <stop offset="100%" stop-color="#22c55e"/>
+    <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="100%" stop-color="#ff7e5f"/>
     </linearGradient>
   </defs>
 
-  <rect width="420" height="140" fill="white"/>
-
-  <g transform="translate(20 18)">
-    <circle cx="90" cy="46" r="30" fill="url(#sun)"/>
-    <path d="M20 88 L60 44 L86 74 L112 32 L160 88 Z" fill="url(#mountain)"/>
-    <path d="M0 98 C30 90 60 92 90 100 C120 108 150 110 180 100 L180 120 L0 120 Z" fill="url(#land)"/>
-    <path d="M66 120 C78 108 92 102 106 98" fill="none" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <!-- Icon -->
+  <g transform="translate(40,30)">
+    <circle cx="70" cy="70" r="68" fill="none" stroke="#0f4c75" stroke-width="4"/>
+    <path d="M20 90 L55 50 L70 70 L95 40 L120 90 Z" fill="#1b6ca8"/>
+    <circle cx="100" cy="45" r="10" fill="url(#sunset)"/>
+    <path d="M35 110 C60 95,80 95,105 110" fill="none" stroke="#2ecc71" stroke-width="4"/>
   </g>
 
-  <text x="220" y="92" font-family="Georgia, 'Times New Roman', serif" font-size="48" fill="#0f172a" letter-spacing="0.5">OsamVista</text>
+  <!-- Text -->
+  <text x="200" y="115" font-size="56" font-family="Poppins, Arial, sans-serif" fill="#0f4c75">
+    Osam<tspan fill="#16a085">Vista</tspan>
+  </text>
 </svg>

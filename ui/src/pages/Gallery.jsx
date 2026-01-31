@@ -39,7 +39,7 @@ export default function Gallery() {
         title: item.title || item.name || 'Untitled',
         category: item.category || item.type || 'General',
         image: resolveImageUrl(
-          item.image || item.image_url || item.imageUrl || item.url || item.file_url
+          convertBackendImagePath(item.image_url) || item.image || item.imageUrl || item.url || item.file_url
         ),
       }))
 
@@ -60,6 +60,24 @@ export default function Gallery() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Convert backend image paths to local asset paths
+  const convertBackendImagePath = (imagePath) => {
+    if (!imagePath) return null
+    
+    // If it's already a local path, return it
+    if (imagePath.startsWith('/src/assets/')) {
+      return imagePath
+    }
+    
+    // Convert /api/images/filename.jpg to /src/assets/images/filename.jpg
+    if (imagePath.includes('/api/images/') || imagePath.startsWith('/images/')) {
+      const filename = imagePath.split('/').pop()
+      return `/src/assets/images/${filename}`
+    }
+    
+    return imagePath
   }
 
   // Handle category filter
@@ -367,109 +385,109 @@ function getMockGalleryItems() {
   return [
     {
       id: 1,
-      title: 'Sunrise at Osam Hill Temple',
-      description: 'Golden sunrise illuminating the ancient temple architecture.',
+      title: 'Osam Hill Temple',
+      description: 'Ancient temple architecture with spiritual significance.',
       category: 'Temples',
-      image: 'https://images.unsplash.com/photo-1512207736139-6c3ee1990e77?w=600&h=800&fit=crop',
+      image: '/src/assets/images/osam-hill-temple.jpg',
       photographer: 'John Doe',
       gridRow: 2,
     },
     {
       id: 2,
-      title: 'Diwali Celebration',
-      description: 'Vibrant colors during the festival of lights.',
-      category: 'Festivals',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
+      title: 'Hill Flowers in Bloom',
+      description: 'Vibrant flora blooming across the hill grounds.',
+      category: 'Landscapes',
+      image: '/src/assets/images/osam-hill-flowers.jpg',
       photographer: 'Sarah Smith',
       gridRow: 1,
     },
     {
       id: 3,
-      title: 'Sacred Water Spring',
-      description: 'Serene natural spring surrounded by greenery.',
+      title: 'Hill Landscape View',
+      description: 'Serene natural landscape surrounded by greenery.',
       category: 'Landscapes',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop',
+      image: '/src/assets/images/osam-hill1.jpg',
       photographer: 'Mike Johnson',
       gridRow: 2,
     },
     {
       id: 4,
-      title: 'Traditional Dance Performance',
-      description: 'Local artists performing classical dance at the cultural center.',
-      category: 'Culture',
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=400&fit=crop',
+      title: 'Ancient Temple Stairs',
+      description: 'Historic stone stairs climbing the sacred hill.',
+      category: 'Temples',
+      image: '/src/assets/images/osam-stairs.jpg',
       photographer: 'Emma Wilson',
       gridRow: 1,
     },
     {
       id: 5,
-      title: 'Ancient Stone Carvings',
-      description: 'Intricate details of historical architectural elements.',
+      title: 'Dwarka Temple Gates',
+      description: 'Intricate details of temple architectural elements.',
       category: 'Temples',
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=700&fit=crop',
+      image: '/src/assets/images/dwarka-temple-gates.jpg',
       photographer: 'David Lee',
       gridRow: 2,
     },
     {
       id: 6,
-      title: 'Evening Prayer Ceremony',
-      description: 'Pilgrims gathering for evening spiritual rituals.',
+      title: 'Modhera Sun Temple',
+      description: 'Grand sun temple with intricate carvings.',
       category: 'Culture',
-      image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=600&h=400&fit=crop',
+      image: '/src/assets/images/modhera-temple.jpg',
       photographer: 'Lisa Anderson',
       gridRow: 1,
     },
     {
       id: 7,
-      title: 'Mountain Valley View',
-      description: 'Panoramic view of the surrounding valleys and peaks.',
-      category: 'Landscapes',
-      image: 'https://images.unsplash.com/photo-1606933248051-5ce88adc6aa4?w=600&h=800&fit=crop',
+      title: 'Somnath Temple Grandeur',
+      description: 'Panoramic view of the coastal temple complex.',
+      category: 'Temples',
+      image: '/src/assets/images/somnath-temple.png',
       photographer: 'Chris Martin',
       gridRow: 2,
     },
     {
       id: 8,
-      title: 'Festival Lights Display',
-      description: 'Spectacular light installations during major celebrations.',
+      title: 'Somnath Marathon Event',
+      description: 'Community gathering and sporting event.',
       category: 'Events',
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=600&fit=crop',
+      image: '/src/assets/images/somnath-marathon.jpg',
       photographer: 'Anna Taylor',
       gridRow: 2,
     },
     {
       id: 9,
-      title: 'Temple Interior Details',
-      description: 'Fine architectural details within the sacred sanctuary.',
+      title: 'Palitana Temples Complex',
+      description: 'Ancient temple complex on sacred hilltop.',
       category: 'Temples',
-      image: 'https://images.unsplash.com/photo-1512207736139-6c3ee1990e77?w=600&h=400&fit=crop',
+      image: '/src/assets/images/palitana-temples.jpg',
       photographer: 'Robert Brown',
       gridRow: 1,
     },
     {
       id: 10,
-      title: 'Seasonal Flowers',
-      description: 'Vibrant flora blooming across the temple grounds.',
-      category: 'Landscapes',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=500&fit=crop',
+      title: 'Dwarka Heritage Site',
+      description: 'Historic pilgrimage destination with cultural significance.',
+      category: 'Culture',
+      image: '/src/assets/images/dwarka.jpg',
       photographer: 'Jennifer White',
       gridRow: 1,
     },
     {
       id: 11,
-      title: 'Cultural Procession',
-      description: 'Grand parade showcasing traditions and heritage.',
+      title: 'Kutch Craft Heritage',
+      description: 'Traditional craftsmanship and cultural heritage.',
       category: 'Culture',
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop',
+      image: '/src/assets/images/kutch-kraft.jpg',
       photographer: 'Mark Davis',
       gridRow: 1,
     },
     {
       id: 12,
-      title: 'Night Sky Photography',
-      description: 'Starlit sky above the sacred temple complex.',
+      title: 'Gir Forest Wildlife',
+      description: 'Exotic wildlife in natural habitat.',
       category: 'Landscapes',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=700&fit=crop',
+      image: '/src/assets/images/gir-forest-wildlife.jpg',
       photographer: 'Paul Garcia',
       gridRow: 2,
     },

@@ -29,6 +29,7 @@ class Event(Base):
     start_date = Column(DateTime, nullable=False, index=True)
     end_date = Column(DateTime, nullable=True)
     location = Column(String(500), nullable=True)
+    image_url = Column(String(1024), nullable=True)
     is_active = Column(Boolean, default=True, nullable=False)
     
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

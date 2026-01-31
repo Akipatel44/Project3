@@ -38,7 +38,7 @@ export default function Events() {
         category: event.category || event.event_type || 'Cultural',
         location: event.location || event.address || '',
         image: resolveImageUrl(
-          event.image || event.image_url || event.imageUrl || event.cover_image || event.banner_url
+          convertBackendImagePath(event.image_url) || event.image || event.imageUrl || event.cover_image || event.banner_url
         ),
       }))
 
@@ -46,8 +46,8 @@ export default function Events() {
 
       // Separate upcoming and past events
       const now = new Date()
-      const upcoming = data.filter(event => new Date(event.date) >= now)
-      const past = data.filter(event => new Date(event.date) < now)
+      const upcoming = data.filter(event => new Date(event.start_date || event.date) >= now)
+      const past = data.filter(event => new Date(event.start_date || event.date) < now)
 
       setUpcomingEvents(upcoming)
       setPastEvents(past)
@@ -68,6 +68,24 @@ export default function Events() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Convert backend image paths to local asset paths
+  const convertBackendImagePath = (imagePath) => {
+    if (!imagePath) return null
+    
+    // If it's already a local path, return it
+    if (imagePath.startsWith('/src/assets/')) {
+      return imagePath
+    }
+    
+    // Convert /api/images/filename.jpg to /src/assets/images/filename.jpg
+    if (imagePath.includes('/api/images/') || imagePath.startsWith('/images/')) {
+      const filename = imagePath.split('/').pop()
+      return `/src/assets/images/${filename}`
+    }
+    
+    return imagePath
   }
 
   // Get filtered events based on tab and filters
@@ -365,18 +383,18 @@ function getMockEvents() {
       date: futureDate.toISOString().split('T')[0],
       time: '06:00',
       location: 'Osam Hill Temple Complex',
-      image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=600&h=400&fit=crop',
+      image: '/src/assets/images/osam-hill-temple.jpg',
       attendees: 5000,
     },
     {
       id: 2,
-      name: 'Diwali Celebration',
-      description: 'Festival of lights with illuminations, prayers, and cultural performances.',
+      name: 'Somnath Marathon',
+      description: 'Marathon event along the coastal pilgrimage route.',
       category: 'Festival',
       date: new Date(futureDate.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       time: '18:00',
-      location: 'Central Plaza, Osam Hill',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
+      location: 'Somnath, Gujarat',
+      image: '/src/assets/images/somnath-marathon.jpg',
       attendees: 3000,
     },
     {
@@ -387,18 +405,18 @@ function getMockEvents() {
       date: new Date(futureDate.getTime() + 25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       time: '19:00',
       location: 'Cultural Center, Osam Hill',
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=400&fit=crop',
+      image: '/src/assets/images/osam-hill-flowers.jpg',
       attendees: 2000,
     },
     {
       id: 4,
-      name: 'Holi Spring Festival',
-      description: 'Colorful celebration of spring with music, food, and community gathering.',
+      name: 'Dwarka Temple Festival',
+      description: 'Colorful celebration with music, food, and community gathering.',
       category: 'Celebration',
       date: new Date(futureDate.getTime() + 40 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       time: '07:00',
-      location: 'Osam Hill Grounds',
-      image: 'https://images.unsplash.com/photo-1512207736139-6c3ee1990e77?w=600&h=400&fit=crop',
+      location: 'Dwarka, Gujarat',
+      image: '/src/assets/images/dwarka.jpg',
       attendees: 4000,
     },
     {
@@ -409,7 +427,7 @@ function getMockEvents() {
       date: pastDate.toISOString().split('T')[0],
       time: '06:00',
       location: 'Meditation Pavilion',
-      image: 'https://images.unsplash.com/photo-1606933248051-5ce88adc6aa4?w=600&h=400&fit=crop',
+      image: '/src/assets/images/osam-hill1.jpg',
       attendees: 500,
     },
     {
@@ -419,8 +437,8 @@ function getMockEvents() {
       category: 'Cultural',
       date: new Date(pastDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       time: '09:00',
-      location: 'Various Locations',
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop',
+      location: 'Palitana Temples',
+      image: '/src/assets/images/palitana-temples.jpg',
       attendees: 1000,
     },
   ]

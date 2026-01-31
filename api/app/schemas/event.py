@@ -46,6 +46,7 @@ class EventResponse(BaseModel):
     start_date: datetime
     end_date: Optional[datetime]
     location: Optional[str]
+    image_url: Optional[str]
     is_active: bool
     created_at: datetime
     updated_at: datetime

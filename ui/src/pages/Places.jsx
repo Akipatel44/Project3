@@ -36,7 +36,7 @@ export default function Places() {
         category: place.category || place.place_type || 'Temple',
         location: place.location || place.address || '',
         image: resolveImageUrl(
-          place.image || place.image_url || place.imageUrl || place.cover_image || place.banner_url
+          convertBackendImagePath(place.image_url) || place.image || place.imageUrl || place.cover_image || place.banner_url
         ),
       }))
 
@@ -57,6 +57,24 @@ export default function Places() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Convert backend image paths to local asset paths
+  const convertBackendImagePath = (imagePath) => {
+    if (!imagePath) return null
+    
+    // If it's already a local path, return it
+    if (imagePath.startsWith('/src/assets/')) {
+      return imagePath
+    }
+    
+    // Convert /api/images/filename.jpg to /src/assets/images/filename.jpg
+    if (imagePath.includes('/api/images/') || imagePath.startsWith('/images/')) {
+      const filename = imagePath.split('/').pop()
+      return `/src/assets/images/${filename}`
+    }
+    
+    return imagePath
   }
 
   // Handle category filter
@@ -323,62 +341,62 @@ function getMockPlaces() {
       description: 'Ancient temple perched on the hilltop with stunning architectural design.',
       category: 'Temple',
       location: 'Osam Hill, Gujarat',
-      image: 'https://images.unsplash.com/photo-1512207736139-6c3ee1990e77?w=600&h=400&fit=crop',
+      image: '/src/assets/images/osam-hill-temple.jpg',
       rating: 4.8,
       visitingHours: '6 AM - 8 PM',
       visitors: '5000+',
     },
     {
       id: 2,
-      name: 'Lakshmi Temple Complex',
-      description: 'Magnificent temple complex dedicated to Goddess Lakshmi.',
+      name: 'Dwarka Temple Gates',
+      description: 'Magnificent temple gates dedicated to Lord Krishna.',
       category: 'Temple',
-      location: 'Central Osam, Gujarat',
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=400&fit=crop',
+      location: 'Dwarka, Gujarat',
+      image: '/src/assets/images/dwarka-temple-gates.jpg',
       rating: 4.6,
       visitingHours: '5 AM - 9 PM',
       visitors: '4500+',
     },
     {
       id: 3,
-      name: 'Ancient Stone Monument',
-      description: 'Historical monument dating back 500 years with intricate carvings.',
+      name: 'Modhera Sun Temple',
+      description: 'Historical sun temple with intricate architectural elements.',
       category: 'Monument',
-      location: 'South Osam, Gujarat',
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop',
+      location: 'Modhera, Gujarat',
+      image: '/src/assets/images/modhera-temple.jpg',
       rating: 4.5,
       visitingHours: '8 AM - 6 PM',
       visitors: '3000+',
     },
     {
       id: 4,
-      name: 'Sacred Water Spring',
-      description: 'Natural spring with believed spiritual and medicinal properties.',
+      name: 'Osam Hill Stairs',
+      description: 'Historic stone stairs climbing the sacred hill.',
       category: 'Natural',
-      location: 'East Osam, Gujarat',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
+      location: 'Osam Hill, Gujarat',
+      image: '/src/assets/images/osam-stairs.jpg',
       rating: 4.7,
       visitingHours: '7 AM - 5 PM',
       visitors: '2500+',
     },
     {
       id: 5,
-      name: 'Cultural Center',
+      name: 'Kutch Heritage & Crafts',
       description: 'Modern facility showcasing traditional arts and crafts.',
       category: 'Cultural',
-      location: 'West Osam, Gujarat',
-      image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=600&h=400&fit=crop',
+      location: 'Kutch, Gujarat',
+      image: '/src/assets/images/kutch-kraft.jpg',
       rating: 4.4,
       visitingHours: '9 AM - 7 PM',
       visitors: '2000+',
     },
     {
       id: 6,
-      name: 'Meditation Pavilion',
-      description: 'Serene pavilion perfect for meditation and spiritual practices.',
+      name: 'Somnath Temple',
+      description: 'Ancient temple perfect for spiritual practices and pilgrimage.',
       category: 'Temple',
-      location: 'North Osam, Gujarat',
-      image: 'https://images.unsplash.com/photo-1606933248051-5ce88adc6aa4?w=600&h=400&fit=crop',
+      location: 'Somnath, Gujarat',
+      image: '/src/assets/images/somnath-temple.png',
       rating: 4.9,
       visitingHours: '6 AM - 8 PM',
       visitors: '1500+',
