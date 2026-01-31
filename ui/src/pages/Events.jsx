@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MainLayout } from '@/components/layout'
 import EventCard from '@/components/ui/EventCard'
 import { Search, X, Loader } from 'lucide-react'
 import { eventsAPI } from '@/services/api'
@@ -109,8 +108,7 @@ export default function Events() {
   }
 
   return (
-    <MainLayout>
-      <div className="w-full">
+    <div className="w-full">
         {/* Header Section */}
         <motion.section
           className="bg-gradient-to-r from-amber-600 to-amber-700 text-white py-16"
@@ -340,7 +338,6 @@ export default function Events() {
           </div>
         </motion.section>
       </div>
-    </MainLayout>
   )
 }
 

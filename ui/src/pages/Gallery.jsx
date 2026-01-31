@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MainLayout } from '@/components/layout'
 import GalleryItem from '@/components/ui/GalleryItem'
 import GalleryModal from '@/components/ui/GalleryModal'
 import { Search, X, Loader } from 'lucide-react'
@@ -139,8 +138,7 @@ export default function Gallery() {
   }
 
   return (
-    <MainLayout>
-      <div className="w-full">
+    <div className="w-full">
         {/* Header Section */}
         <motion.section
           className="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-16"
@@ -352,7 +350,6 @@ export default function Gallery() {
           />
         )}
       </div>
-    </MainLayout>
   )
 }
 

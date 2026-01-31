@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MainLayout } from '@/components/layout'
 import PlaceCard from '@/components/ui/PlaceCard'
 import { Search, X, Loader } from 'lucide-react'
 import { placesAPI } from '@/services/api'
@@ -30,10 +29,15 @@ export default function Places() {
       
       // Fetch from API
       const response = await placesAPI.getAll()
-      const data = response.data || []
-      
+      const rawPlaces = response.data?.places || response.data || []
+      const data = rawPlaces.map((place) => ({
+        ...place,
+        category: place.category || place.place_type || 'Temple',
+        location: place.location || place.address || '',
+      }))
+
       setPlaces(data)
-      
+
       // Extract unique categories
       const uniqueCategories = ['All', ...new Set(data.map(place => place.category).filter(Boolean))]
       setCategories(uniqueCategories)
@@ -107,8 +111,7 @@ export default function Places() {
   }
 
   return (
-    <MainLayout>
-      <div className="w-full">
+    <div className="w-full">
         {/* Header Section */}
         <motion.section
           className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16"
@@ -304,7 +307,6 @@ export default function Places() {
           </div>
         </motion.section>
       </div>
-    </MainLayout>
   )
 }
 

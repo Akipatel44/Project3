@@ -92,7 +92,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200"
+      className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-sm"
       variants={navVariants}
       initial="hidden"
       animate="visible"
@@ -102,16 +102,19 @@ export default function Navbar() {
           {/* Logo */}
           <motion.button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-3 group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">O</span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 via-green-500 to-teal-600 flex items-center justify-center shadow-md">
+              <span className="text-white font-bold text-sm tracking-widest">OV</span>
             </div>
-            <span className="hidden sm:inline text-xl font-bold text-gray-800 group-hover:text-green-600 transition">
-              OsamVista
-            </span>
+            <div className="hidden sm:flex flex-col items-start">
+              <span className="text-lg font-bold text-gray-800 group-hover:text-emerald-600 transition">
+                OsamVista
+              </span>
+              <span className="text-[11px] text-gray-400 -mt-1">Explore Heritage</span>
+            </div>
           </motion.button>
 
           {/* Desktop Menu */}
@@ -124,9 +127,9 @@ export default function Navbar() {
                 <motion.button
                   key={item.id}
                   onClick={() => navigate(item.path)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                     active
-                      ? 'bg-green-100 text-green-700 font-semibold'
+                      ? 'bg-emerald-100 text-emerald-700 font-semibold shadow-sm'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                   whileHover={{ x: 2 }}
