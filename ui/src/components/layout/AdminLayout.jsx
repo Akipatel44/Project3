@@ -3,6 +3,7 @@ import { BarChart3, Users, MapPin, Calendar, Image, Settings, LogOut, Menu, X } 
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import logo from '@/assets/images/osamvista-logo.svg'
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -44,9 +45,7 @@ const AdminLayout = ({ children }) => {
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-3"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center font-bold text-white">
-              OV
-            </div>
+            <img src={logo} alt="OsamVista" className="h-9 w-auto max-w-[160px] object-contain" />
             <div>
               <h1 className="text-lg font-bold text-white">OsamVista</h1>
               <p className="text-xs text-gray-400">Admin Panel</p>

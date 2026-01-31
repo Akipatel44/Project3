@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/context'
 import { getMenuByRole } from '@/config/menuConfig'
+import logo from '@/assets/images/osamvista-logo.svg'
 
 /**
  * Navbar Component
@@ -106,15 +107,11 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 via-green-500 to-teal-600 flex items-center justify-center shadow-md">
-              <span className="text-white font-bold text-sm tracking-widest">OV</span>
-            </div>
-            <div className="hidden sm:flex flex-col items-start">
-              <span className="text-lg font-bold text-gray-800 group-hover:text-emerald-600 transition">
-                OsamVista
-              </span>
-              <span className="text-[11px] text-gray-400 -mt-1">Explore Heritage</span>
-            </div>
+            <img
+              src={logo}
+              alt="OsamVista"
+              className="h-9 w-auto max-w-[160px] object-contain"
+            />
           </motion.button>
 
           {/* Desktop Menu */}

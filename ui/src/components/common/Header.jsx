@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
+import logo from '@/assets/images/osamvista-logo.svg'
 
 /**
  * Header Component
@@ -18,7 +19,7 @@ export default function Header() {
       transition={{ duration: 0.5 }}
     >
       <div className="container-max flex justify-between items-center h-16">
-        <h1 className="text-2xl font-bold text-primary-600">OsamVista</h1>
+        <img src={logo} alt="OsamVista" className="h-9 w-auto max-w-[160px] object-contain" />
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden"

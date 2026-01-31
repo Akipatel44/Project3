@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import logo from '@/assets/images/osamvista-logo.svg'
 
 /**
  * Footer Component
@@ -15,7 +16,7 @@ export default function Footer() {
       <div className="container-max py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="text-lg font-bold mb-4">OsamVista</h3>
+            <img src={logo} alt="OsamVista" className="h-9 w-auto max-w-[160px] object-contain mb-4" />
             <p className="text-gray-400">Exploring culture and heritage</p>
           </div>
           <div>
