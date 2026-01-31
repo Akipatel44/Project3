@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import PlaceCard from '@/components/ui/PlaceCard'
 import { Search, X, Loader } from 'lucide-react'
 import { placesAPI } from '@/services/api'
+import { resolveImageUrl } from '@/utils/imageUtils'
 
 /**
  * Places Page
@@ -34,6 +35,9 @@ export default function Places() {
         ...place,
         category: place.category || place.place_type || 'Temple',
         location: place.location || place.address || '',
+        image: resolveImageUrl(
+          place.image || place.image_url || place.imageUrl || place.cover_image || place.banner_url
+        ),
       }))
 
       setPlaces(data)

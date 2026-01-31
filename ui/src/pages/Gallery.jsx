@@ -4,6 +4,7 @@ import GalleryItem from '@/components/ui/GalleryItem'
 import GalleryModal from '@/components/ui/GalleryModal'
 import { Search, X, Loader } from 'lucide-react'
 import { galleryAPI } from '@/services/api'
+import { resolveImageUrl } from '@/utils/imageUtils'
 
 /**
  * Gallery Page
@@ -32,7 +33,15 @@ export default function Gallery() {
 
       // Fetch from API
       const response = await galleryAPI.getAll()
-      const data = response.data || []
+      const rawItems = response.data?.gallery || response.data?.items || response.data || []
+      const data = rawItems.map((item) => ({
+        ...item,
+        title: item.title || item.name || 'Untitled',
+        category: item.category || item.type || 'General',
+        image: resolveImageUrl(
+          item.image || item.image_url || item.imageUrl || item.url || item.file_url
+        ),
+      }))
 
       setAllItems(data)
       setFilteredItems(data)

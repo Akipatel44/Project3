@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Calendar, MapPin, Users, Clock, ArrowRight } from 'lucide-react'
+import { FALLBACK_IMAGE, resolveImageUrl } from '@/utils/imageUtils'
 
 const EventCard = ({ event, index, onViewDetails, isPast = false }) => {
   const itemVariants = {
@@ -45,8 +46,11 @@ const EventCard = ({ event, index, onViewDetails, isPast = false }) => {
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden bg-gray-200">
         <img
-          src={event.image || 'https://via.placeholder.com/400x300?text=Event+Image'}
+          src={resolveImageUrl(event.image) || FALLBACK_IMAGE}
           alt={event.name}
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE
+          }}
           className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ${
             isPast ? 'grayscale group-hover:grayscale' : ''
           }`}

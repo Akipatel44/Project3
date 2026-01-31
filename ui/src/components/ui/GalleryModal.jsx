@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { FALLBACK_IMAGE, resolveImageUrl } from '@/utils/imageUtils'
 
 const GalleryModal = ({ isOpen, item, items = [], currentIndex = 0, onClose, onNext, onPrev }) => {
   if (!isOpen || !item) return null
@@ -59,8 +60,11 @@ const GalleryModal = ({ isOpen, item, items = [], currentIndex = 0, onClose, onN
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                src={item.image || 'https://via.placeholder.com/800x600?text=Gallery'}
+                src={resolveImageUrl(item.image) || FALLBACK_IMAGE}
                 alt={item.title}
+                onError={(e) => {
+                  e.currentTarget.src = FALLBACK_IMAGE
+                }}
                 className="w-full h-full object-contain"
               />
 

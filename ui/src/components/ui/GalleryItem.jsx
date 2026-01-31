@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Maximize2 } from 'lucide-react'
+import { FALLBACK_IMAGE, resolveImageUrl } from '@/utils/imageUtils'
 
 const GalleryItem = ({ item, index, onClick }) => {
   const itemVariants = {
@@ -22,8 +23,11 @@ const GalleryItem = ({ item, index, onClick }) => {
     >
       {/* Image */}
       <img
-        src={item.image || 'https://via.placeholder.com/400x300?text=Gallery'}
+        src={resolveImageUrl(item.image) || FALLBACK_IMAGE}
         alt={item.title}
+        onError={(e) => {
+          e.currentTarget.src = FALLBACK_IMAGE
+        }}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
       />
 

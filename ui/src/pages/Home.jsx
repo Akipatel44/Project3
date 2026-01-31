@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ChevronRight, ChevronDown, Star, MapPin, Calendar, ArrowRight, Award, Zap, Globe } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { FALLBACK_IMAGE, withFallback } from '@/utils/imageUtils'
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0)
@@ -41,14 +42,19 @@ const Home = () => {
       {/* ==================== HERO SECTION ==================== */}
       <motion.section
         className="relative w-full h-screen bg-cover bg-center flex items-center justify-center overflow-hidden"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&h=900&fit=crop)',
-          backgroundAttachment: 'fixed',
-        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
+        <motion.img
+          src={withFallback('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&h=900&fit=crop')}
+          alt=""
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE
+          }}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ y: scrollY * 0.2 }}
+        />
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/50 pointer-events-none" />
 
@@ -101,15 +107,16 @@ const Home = () => {
             </motion.div>
           </motion.div>
 
-          {/* Scroll Indicator */}
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          >
-            <ChevronDown size={32} className="text-white" />
-          </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute inset-x-0 bottom-6 flex justify-center pointer-events-none"
+        >
+          <ChevronDown size={32} className="text-white" />
+        </motion.div>
       </motion.section>
 
       {/* ==================== OSAM HILL INTRO ==================== */}
@@ -187,8 +194,11 @@ const Home = () => {
               transition={{ duration: 0.8 }}
             >
               <img
-                src="https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=800&h=900&fit=crop"
+                src={withFallback('https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=800&h=900&fit=crop')}
                 alt="Osam Hill Temple"
+                onError={(e) => {
+                  e.currentTarget.src = FALLBACK_IMAGE
+                }}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -256,8 +266,11 @@ const Home = () => {
                 {/* Card Image */}
                 <div className="relative h-64 overflow-hidden">
                   <img
-                    src={highlight.image}
+                    src={withFallback(highlight.image)}
                     alt={highlight.title}
+                    onError={(e) => {
+                      e.currentTarget.src = FALLBACK_IMAGE
+                    }}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
@@ -297,13 +310,18 @@ const Home = () => {
       {/* ==================== CTA SECTION ==================== */}
       <motion.section
         className="relative py-24 lg:py-32 bg-cover bg-center overflow-hidden"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=600&fit=crop)',
-        }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
+        <img
+          src={withFallback('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=600&fit=crop')}
+          alt=""
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE
+          }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/60" />
 

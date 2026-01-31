@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { MapPin, Calendar, Users, Star } from 'lucide-react'
+import { FALLBACK_IMAGE, resolveImageUrl } from '@/utils/imageUtils'
 
 const PlaceCard = ({ place, index, onViewDetails }) => {
   const itemVariants = {
@@ -22,8 +23,11 @@ const PlaceCard = ({ place, index, onViewDetails }) => {
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden bg-gray-200">
         <img
-          src={place.image || 'https://via.placeholder.com/400x300?text=Place+Image'}
+          src={resolveImageUrl(place.image) || FALLBACK_IMAGE}
           alt={place.name}
+          onError={(e) => {
+            e.currentTarget.src = FALLBACK_IMAGE
+          }}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         

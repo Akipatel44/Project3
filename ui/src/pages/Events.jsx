@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import EventCard from '@/components/ui/EventCard'
 import { Search, X, Loader } from 'lucide-react'
 import { eventsAPI } from '@/services/api'
+import { resolveImageUrl } from '@/utils/imageUtils'
 
 /**
  * Events Page
@@ -31,7 +32,15 @@ export default function Events() {
 
       // Fetch from API
       const response = await eventsAPI.getAll()
-      const data = response.data || []
+      const rawEvents = response.data?.events || response.data || []
+      const data = rawEvents.map((event) => ({
+        ...event,
+        category: event.category || event.event_type || 'Cultural',
+        location: event.location || event.address || '',
+        image: resolveImageUrl(
+          event.image || event.image_url || event.imageUrl || event.cover_image || event.banner_url
+        ),
+      }))
 
       setAllEvents(data)
 
