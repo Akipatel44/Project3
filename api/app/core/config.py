@@ -1,5 +1,6 @@
 # Core configuration for FastAPI application
 import os
+from urllib.parse import quote_plus
 from dotenv import load_dotenv
 from functools import lru_cache
 
@@ -19,9 +20,11 @@ class Settings:
     @property
     def DATABASE_URL(self) -> str:
         """Construct SQLAlchemy database URL"""
+        user = quote_plus(self.DATABASE_USER)
+        password = quote_plus(self.DATABASE_PASSWORD)
         return (
             f"mysql+pymysql://"
-            f"{self.DATABASE_USER}:{self.DATABASE_PASSWORD}"
+            f"{user}:{password}"
             f"@{self.DATABASE_HOST}:{self.DATABASE_PORT}"
             f"/{self.DATABASE_NAME}"
         )

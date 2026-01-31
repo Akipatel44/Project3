@@ -17,7 +17,15 @@ class Event(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False, index=True)
     description = Column(Text, nullable=True)
-    event_type = Column(SQLEnum(EventType), nullable=False, index=True)
+    event_type = Column(
+        SQLEnum(
+            EventType,
+            values_callable=lambda enum_cls: [e.value for e in enum_cls],
+            native_enum=False,
+        ),
+        nullable=False,
+        index=True,
+    )
     start_date = Column(DateTime, nullable=False, index=True)
     end_date = Column(DateTime, nullable=True)
     location = Column(String(500), nullable=True)

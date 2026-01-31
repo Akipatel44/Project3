@@ -21,7 +21,15 @@ class Gallery(Base):
     __tablename__ = "gallery"
     
     id = Column(Integer, primary_key=True, index=True)
-    category = Column(SQLEnum(GalleryCategory), nullable=False, index=True)
+    category = Column(
+        SQLEnum(
+            GalleryCategory,
+            values_callable=lambda enum_cls: [e.value for e in enum_cls],
+            native_enum=False,
+        ),
+        nullable=False,
+        index=True,
+    )
     image_url = Column(String(1024), nullable=False, unique=True)
     title = Column(String(255), nullable=False, index=True)
     description = Column(Text, nullable=True)

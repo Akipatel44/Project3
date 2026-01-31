@@ -18,7 +18,15 @@ class Place(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False, index=True)
     description = Column(Text, nullable=True)
-    place_type = Column(SQLEnum(PlaceType), nullable=False, index=True)
+    place_type = Column(
+        SQLEnum(
+            PlaceType,
+            values_callable=lambda enum_cls: [e.value for e in enum_cls],
+            native_enum=False,
+        ),
+        nullable=False,
+        index=True,
+    )
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     address = Column(String(500), nullable=True)
