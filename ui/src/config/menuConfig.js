@@ -6,7 +6,7 @@
 export const MENU_CONFIG = {
   SUPER_ADMIN: [
     { id: 'home', label: 'Home', path: '/', icon: 'Home' },
-    { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'BarChart3' },
+    { id: 'dashboard', label: 'Dashboard', path: '/admin/dashboard', icon: 'BarChart3' },
     { id: 'users', label: 'Users', path: '/admin/users', icon: 'Users' },
     { id: 'places', label: 'Places', path: '/places', icon: 'MapPin' },
     { id: 'events', label: 'Events', path: '/events', icon: 'Calendar' },

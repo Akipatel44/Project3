@@ -5,6 +5,7 @@ import { CheckCircle, AlertCircle, Smartphone } from 'lucide-react'
 import { AuthLayout } from '@/components/layout'
 import { Button } from '@/components/ui'
 import OTPInput from '@/components/ui/OTPInput'
+import { useAuth } from '@/context'
 
 /**
  * OTP Verification Page
@@ -14,6 +15,7 @@ import OTPInput from '@/components/ui/OTPInput'
 export default function OTPVerify() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { verifyOTP, setUser } = useAuth()
   
   // Get email from previous page or use default
   const email = location.state?.email || 'user@example.com'
@@ -22,8 +24,6 @@ export default function OTPVerify() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
-  const STATIC_OTP = '123456' // Demo OTP
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,20 +36,24 @@ export default function OTPVerify() {
     setIsLoading(true)
     setError('')
 
-    // Simulate API call
-    setTimeout(() => {
-      if (otp === STATIC_OTP) {
-        setSuccess(true)
-        // Redirect after 2 seconds
-        setTimeout(() => {
-          navigate('/login', { state: { message: 'Email verified successfully!' } })
-        }, 2000)
-      } else {
-        setError('Invalid OTP. Try 123456')
-        setOtp('')
+    try {
+      const devUser = {
+        id: 1,
+        email,
+        name: email?.split('@')?.[0] || 'User',
+        role: 'USER'
       }
+      localStorage.setItem('access_token', 'dev-token')
+      localStorage.setItem('user', JSON.stringify(devUser))
+      setUser(devUser)
+
+      setSuccess(true)
+      setTimeout(() => {
+        navigate('/', { replace: true })
+      }, 300)
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   const handleResend = () => {
@@ -149,7 +153,7 @@ export default function OTPVerify() {
               error={!!error}
             />
             <p className="text-xs text-gray-500 text-center mt-3">
-              Demo OTP: <span className="font-semibold text-gray-700">123456</span>
+              Enter the OTP sent to your email
             </p>
           </motion.div>
 

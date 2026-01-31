@@ -6,7 +6,6 @@ import { AuthLayout } from '@/components/layout'
 import { Input, Button } from '@/components/ui'
 import { isEmail } from '@/utils'
 import { authAPI } from '@/services/api'
-import { useAuth } from '@/context'
 
 /**
  * Login Page
@@ -15,7 +14,6 @@ import { useAuth } from '@/context'
  */
 export default function Login() {
   const navigate = useNavigate()
-  const { login } = useAuth()
   const [formData, setFormData] = useState({
     email: 'admin@osamvista.com',
     password: 'Admin@123'
@@ -69,12 +67,11 @@ export default function Login() {
 
     setIsLoading(true)
     try {
-      const result = await login(formData.email, formData.password)
-      if (result.success) {
-        // Redirect to dashboard after successful login
-        navigate('/admin/dashboard')
+      const response = await authAPI.login(formData.email, formData.password)
+      if (response?.data?.requires_otp) {
+        navigate('/verify-otp', { state: { email: formData.email } })
       } else {
-        setApiError(result.error || 'Login failed. Please try again.')
+        setApiError('Login failed. Please try again.')
       }
     } catch (error) {
       setApiError(error.response?.data?.message || 'Login failed. Please try again.')
