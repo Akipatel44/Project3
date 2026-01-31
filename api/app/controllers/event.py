@@ -15,7 +15,7 @@ from app.schemas.event import (
 from typing import List
 
 
-event_router = APIRouter(prefix="/api/events", tags=["Events"])
+event_router = APIRouter(prefix="/api/v1/events", tags=["Events"])
 
 
 @event_router.post(

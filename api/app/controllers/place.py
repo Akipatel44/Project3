@@ -22,7 +22,7 @@ from app.database.session import get_db
 from sqlalchemy.orm import Session
 
 # Create router for place endpoints
-router = APIRouter(prefix="/api/places", tags=["Places"])
+router = APIRouter(prefix="/api/v1/places", tags=["Places"])
 
 
 # ==================== CREATE ====================

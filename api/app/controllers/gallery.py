@@ -15,7 +15,7 @@ from app.schemas.gallery import (
 from typing import List
 
 
-gallery_router = APIRouter(prefix="/api/gallery", tags=["Gallery"])
+gallery_router = APIRouter(prefix="/api/v1/gallery", tags=["Gallery"])
 
 
 @gallery_router.post(

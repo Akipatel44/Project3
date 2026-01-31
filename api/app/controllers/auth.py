@@ -26,7 +26,7 @@ from app.services.auth import AuthService
 from app.core.config import settings
 
 # Create router for auth endpoints
-router = APIRouter(prefix="/api/auth", tags=["Authentication"])
+router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
 # In-memory storage for OTPs (TODO: Replace with Redis/Database)
 # Format: {email: {"otp": "123456", "password_hash": "...", "user_data": {...}}}
