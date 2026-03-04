@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import PlaceCard from '@/components/ui/PlaceCard'
 import { Search, X, Loader } from 'lucide-react'
 import { placesAPI } from '@/services/api'
-import { resolveImageUrl } from '@/utils/imageUtils'
+import { resolveImageUrl, getDefaultCardImage } from '@/utils/imageUtils'
 
 /**
  * Places Page
@@ -31,13 +31,14 @@ export default function Places() {
       // Fetch from API
       const response = await placesAPI.getAll()
       const rawPlaces = response.data?.places || response.data || []
-      const data = rawPlaces.map((place) => ({
+      const data = rawPlaces.map((place, index) => ({
         ...place,
         category: place.category || place.place_type || 'Temple',
         location: place.location || place.address || '',
-        image: resolveImageUrl(
-          convertBackendImagePath(place.image_url) || place.image || place.imageUrl || place.cover_image || place.banner_url
-        ),
+        image:
+          resolveImageUrl(
+            buildImageUrl(place.image_url) || place.image || place.imageUrl || place.cover_image || place.banner_url
+          ) || getDefaultCardImage(index),
       }))
 
       setPlaces(data)
@@ -59,19 +60,18 @@ export default function Places() {
     }
   }
 
-  // Convert backend image paths to local asset paths
-  const convertBackendImagePath = (imagePath) => {
+  // Build full image URL from backend path
+  const buildImageUrl = (imagePath) => {
     if (!imagePath) return null
     
-    // If it's already a local path, return it
-    if (imagePath.startsWith('/src/assets/')) {
+    // If it's already a full URL, return it
+    if (imagePath.startsWith('http')) {
       return imagePath
     }
     
-    // Convert /api/images/filename.jpg to /src/assets/images/filename.jpg
-    if (imagePath.includes('/api/images/') || imagePath.startsWith('/images/')) {
-      const filename = imagePath.split('/').pop()
-      return `/src/assets/images/${filename}`
+    // Convert /images/filename.jpg to http://localhost:8000/images/filename.jpg
+    if (imagePath.startsWith('/images/')) {
+      return `http://localhost:8000${imagePath}`
     }
     
     return imagePath

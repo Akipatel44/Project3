@@ -17,6 +17,20 @@ const FALLBACK_SVG = `
 
 export const FALLBACK_IMAGE = `data:image/svg+xml;utf8,${encodeURIComponent(FALLBACK_SVG)}`
 
+const DEFAULT_CARD_IMAGES = [
+  '/images/osam-hill-temple.jpg',
+  '/images/dwarka-temple-gates.jpg',
+  '/images/modhera-temple.jpg',
+  '/images/osam-stairs.jpg',
+  '/images/kutch-kraft.jpg',
+  '/images/somnath-temple.png',
+  '/images/osam-hill-flowers.jpg',
+  '/images/palitana-temples.jpg',
+  '/images/gir-forest-wildlife.jpg',
+  '/images/somnath-marathon.jpg',
+  '/images/dwarka.jpg',
+]
+
 const isAbsoluteUrl = (url) => /^(https?:)?\/\//i.test(url)
 const isDataUrl = (url) => /^data:/i.test(url)
 const isBlobUrl = (url) => /^blob:/i.test(url)
@@ -48,3 +62,10 @@ export const resolveImageUrl = (value) => {
 }
 
 export const withFallback = (value) => resolveImageUrl(value) || FALLBACK_IMAGE
+
+export const getDefaultCardImage = (index = 0) => {
+  if (!DEFAULT_CARD_IMAGES.length) return FALLBACK_IMAGE
+  const safeIndex = Math.abs(Number(index)) || 0
+  const path = DEFAULT_CARD_IMAGES[safeIndex % DEFAULT_CARD_IMAGES.length]
+  return resolveImageUrl(path) || FALLBACK_IMAGE
+}

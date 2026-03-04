@@ -3,6 +3,8 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 from app.controllers.auth import router as auth_router
 from app.controllers.place import router as place_router
 from app.controllers.event import event_router
@@ -26,6 +28,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files for images
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_dir):
+    app.mount("/images", StaticFiles(directory=os.path.join(static_dir, "images")), name="images")
 
 # Startup event - seed database
 @app.on_event("startup")
